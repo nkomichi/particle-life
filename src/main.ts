@@ -1,6 +1,6 @@
 import { Canvas, CanvasSettings } from "./Canvas.js";
 import { Species, Particle } from "./Particle.js";
-import { Universe, tick } from "./Universe.js";
+import { Universe } from "./Universe.js";
 
 const canvasSettings: CanvasSettings = {
   color: "black",
@@ -12,13 +12,15 @@ const canvas = new Canvas('main-canvas', canvasSettings);
 const red: Species = {
   name: 'red',
   color: '#ff0000',
-  radius: 1,
+  mass: 10,
+  radius: 10,
   affinity: new Map<Species, number>(),
 };
 
 const blue: Species = {
   name: 'blue',
   color: '#0000ff',
+  mass: 5,
   radius: 1,
   affinity: new Map<Species, number>(),
 };
@@ -28,27 +30,31 @@ const species: Species[] = [
   blue,
 ];
 
-red.affinity.set(red, 0);
-red.affinity.set(blue, 1);
-blue.affinity.set(red, -1);
-blue.affinity.set(blue, 0.5);
+red.affinity.set(red, 10);
+red.affinity.set(blue, 0);
+blue.affinity.set(red, 0);
+blue.affinity.set(blue, 1);
 
 
 const particles: Particle[] = [];
-particles.push(
-  {
-    species: red,
-    position: { x: 0.0, y: 0.0 },
-    velocity: { x: 0.0, y: 0.0 },
-  }
-);
-particles.push(
-  {
-    species: blue,
-    position: { x: 1.0, y: 1.0 },
-    velocity: { x: 0.0, y: 0.0 },
-  }
-);
+for (let i = 0; i < 100; i++) {
+  particles.push(
+    {
+      species: red,
+      position: { x: Math.random() * 500, y: Math.random() * 500 },
+      velocity: { x: 0.0, y: 0.0 },
+      force: { x: 0.0, y: 0.0 },
+    }
+  );
+  particles.push(
+    {
+      species: blue,
+      position: { x: Math.random() * 500, y: Math.random() * 500 },
+      velocity: { x: 0.0, y: 0.0 },
+      force: { x: 0.0, y: 0.0 },
+    }
+  );
+}
 
 const render = (canvas: Canvas, universe: Universe): void => {
   canvas.fill();
@@ -58,21 +64,19 @@ const render = (canvas: Canvas, universe: Universe): void => {
 };
 
 
-const mainLoop = (universe: Universe, canvas: Canvas) => {
-  const maxTime = 1;
-  for (let i = 0; i < maxTime; i++) {
-    console.log(universe.population);
-    universe = tick(universe);
+const mainLoop = (universe: Universe, canvas: Canvas, maxTime: number) => {
+  setInterval(() => {
+    universe.tick();
     render(canvas, universe);
-  }
-}
-
-const universe: Universe = {
-  size: canvas.settings.size,
-  species: species,
-  population: particles,
-  step: 0,
+  }, 100);
 }
 
 
-mainLoop(universe, canvas);
+const universe = new Universe(
+  canvas.settings.size,
+  species,
+  particles,
+)
+
+
+mainLoop(universe, canvas, 100);

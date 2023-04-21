@@ -38,7 +38,7 @@ class Canvas {
 
   plot(color: string, coordinates: Vector): void {
     this.context.fillStyle = color;
-    this.context.fillRect(coordinates.x - 5, coordinates.y - 5, coordinates.x + 5, coordinates.y + 5)
+    this.context.fillRect(coordinates.x - 2, coordinates.y - 2, 4, 4)
   }
 }
 

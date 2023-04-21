@@ -1,26 +1,24 @@
-import { addVector, subVector, mulVector, distanceOfVector } from "./Vector.js";
+import { addVector, subVector, mulVector, divVector, distanceOfVector } from "./Vector.js";
 function affinity(subject, object, factor) {
+    const cutoff = 250;
     const distance = distanceOfVector(subject, object);
-    return mulVector(subVector(object, subject), factor / distance);
+    if (distance > cutoff) {
+        return { x: 0.0, y: 0.0 };
+    }
+    return mulVector(subVector(object, subject), factor / (distance ** 2));
 }
-function moveParticle(particle, worldSize) {
-    const tempPosition = addVector(particle.position, particle.velocity);
-    if (tempPosition.x < 0) {
-        tempPosition.x += worldSize.x;
+function collision(subject, object, radius) {
+    const distance = distanceOfVector(subject, object);
+    if (distance > radius) {
+        return { x: 0.0, y: 0.0 };
     }
-    if (tempPosition.x >= worldSize.x) {
-        tempPosition.x -= worldSize.y;
-    }
-    if (tempPosition.y < 0) {
-        tempPosition.y += worldSize.y;
-    }
-    if (tempPosition.y >= worldSize.y) {
-        tempPosition.y -= worldSize.y;
-    }
-    return {
-        species: particle.species,
-        position: tempPosition,
-        velocity: particle.velocity,
-    };
+    const unit = divVector(subVector(subject, object), distance);
+    return mulVector(unit, (radius - distance));
 }
-export { moveParticle, affinity };
+function moveParticle(particle) {
+    const acceleration = divVector(particle.force, particle.species.mass);
+    particle.force = { x: 0.0, y: 0.0 };
+    particle.velocity = addVector(particle.velocity, acceleration);
+    particle.position = addVector(particle.position, particle.velocity);
+}
+export { moveParticle, affinity, collision };
