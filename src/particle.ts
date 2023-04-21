@@ -10,7 +10,7 @@ type Species = {
   name: string;
   color: string;
   radius: number;
-  factors: number[];
+  affinity: Map<Species, number>;
 }
 
 type Coordinates = Vector

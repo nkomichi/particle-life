@@ -18,7 +18,7 @@ function tick(universe: Universe): Universe {
 }
 
 function interact(subject: Particle, object: Particle, species: Species[]): Particle {
-  const factor = subject.species.factors[species.indexOf(object.species)];
+  const factor = subject.species.affinity.get(object.species) || 0;
   const force = affinity(subject.position, object.position, factor);
   return {
     species: subject.species,

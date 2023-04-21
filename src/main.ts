@@ -13,14 +13,14 @@ const red: Species = {
   name: 'red',
   color: '#ff0000',
   radius: 1,
-  factors: [],
+  affinity: new Map<Species, number>(),
 };
 
 const blue: Species = {
   name: 'blue',
   color: '#0000ff',
   radius: 1,
-  factors: [],
+  affinity: new Map<Species, number>(),
 };
 
 const species: Species[] = [
@@ -28,8 +28,10 @@ const species: Species[] = [
   blue,
 ];
 
-red.factors = [0, 1];
-blue.factors = [-1, 0.5];
+red.affinity.set(red, 0);
+red.affinity.set(blue, 1);
+blue.affinity.set(red, -1);
+blue.affinity.set(blue, 0.5);
 
 
 const particles: Particle[] = [];
