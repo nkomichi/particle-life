@@ -8,14 +8,14 @@ const canvas = new Canvas('main-canvas', canvasSettings);
 const red = {
     name: 'red',
     color: '#ff0000',
-    mass: 10,
-    radius: 10,
+    mass: 1,
+    radius: 1,
     affinity: new Map(),
 };
 const blue = {
     name: 'blue',
     color: '#0000ff',
-    mass: 5,
+    mass: 1,
     radius: 1,
     affinity: new Map(),
 };
@@ -23,7 +23,7 @@ const species = [
     red,
     blue,
 ];
-red.affinity.set(red, 10);
+red.affinity.set(red, 1);
 red.affinity.set(blue, 0);
 blue.affinity.set(red, 0);
 blue.affinity.set(blue, 1);

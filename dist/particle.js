@@ -13,7 +13,8 @@ function collision(subject, object, radius) {
         return { x: 0.0, y: 0.0 };
     }
     const unit = divVector(subVector(subject, object), distance);
-    return mulVector(unit, (radius - distance));
+    const force = (distance - radius) - 1;
+    return mulVector(unit, force / distance);
 }
 function moveParticle(particle) {
     const acceleration = divVector(particle.force, particle.species.mass);

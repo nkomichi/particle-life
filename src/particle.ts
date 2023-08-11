@@ -34,7 +34,8 @@ function collision(subject: Coordinates, object: Coordinates, radius: number): F
     return { x: 0.0, y: 0.0 };
   }
   const unit = divVector(subVector(subject, object), distance);
-  return mulVector(unit, (radius - distance));
+  const force = (distance - radius) - 1;
+  return mulVector(unit, force);
 }
 
 function moveParticle(particle: Particle): void {
